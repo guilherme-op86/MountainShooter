@@ -1,6 +1,6 @@
 import pygame
 from code.menu import Menu
-from code.const import WIN_WIDTH, WIN_HEIGHT
+from code.const import WIN_WIDTH, WIN_HEIGHT, MENU_OPTION
 
 
 #!/usr/bin/python
@@ -15,11 +15,16 @@ class Game:
         # laço que mantém a janela do jogo aberta
         while True:
             menu = Menu(self.window)
-            menu.run()
-            pass
-            # check for all events
-            # for event in pygame.event.get():
-            #    if event.type == pygame.QUIT:
-            #        print('Quiting...')
-            #        pygame.quit()  # close window
-            #        quit()  # end game
+            # variável de retorno que captura o resultado da interação do jogador com o menu. Guarda qual o opção
+            # o jogador escolheu ao pressionar a tecla enter
+            menu_return = menu.run()
+
+            if menu_return == MENU_OPTION[0]:
+                pass
+            elif menu_return == MENU_OPTION[4]:
+                pygame.quit()
+                quit()
+            else:
+                pass
+
+
