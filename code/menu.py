@@ -11,7 +11,7 @@ class Menu:
     def __init__(self, window):
         self.window = window
         # carrega imagem de fundo do menu
-        self.surf = pygame.image.load('./assets/MenuBg.png')
+        self.surf = pygame.image.load('./assets/MenuBg.png').convert_alpha()
         # cria o retângulo onde vai ser inserida a imagem (iniciando pelo topo esquerdo - regra geral)
         self.rect = self.surf.get_rect(left=0, top=0)
 

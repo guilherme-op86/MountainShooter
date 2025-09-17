@@ -5,7 +5,6 @@ from code.menu import Menu
 from code.const import WIN_WIDTH, WIN_HEIGHT, MENU_OPTION
 
 
-
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
@@ -32,5 +31,3 @@ class Game:
                 quit()
             else:
                 pass
-
-
