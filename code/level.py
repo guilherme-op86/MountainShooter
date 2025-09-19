@@ -1,12 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+import random
 import sys
 
 import pygame
 from pygame import Surface, Rect
 from pygame.font import Font
 
-from code.const import COLOR_WHITE, WIN_HEIGHT
+from code.const import COLOR_WHITE, WIN_HEIGHT, MENU_OPTION, EVENT_ENEMY, SPAWN_TIME
 from code.entity import Entity
 from code.entityFactory import EntityFactory
 
@@ -17,8 +18,17 @@ class Level:
         self.name = name
         self.game_mode = game_mode
         self.entity_list: list[Entity] = []
-        self.entity_list.extend(EntityFactory.get_entity(self.name + 'Bg'))
+        self.entity_list.extend(EntityFactory.get_entity('Level1Bg'))
         self.timeout = 2000  # 20 segundos
+        # cria o player1 ao iniciar o level
+        self.entity_list.append(EntityFactory.get_entity('Player1'))
+        # condição para criar o player2 que só aparece nos modos cooperativos e competitivos (índices 1 e 2 da
+        # constante MENU_OPTION)
+        if game_mode in [MENU_OPTION[1], MENU_OPTION[2]]:
+            self.entity_list.append(EntityFactory.get_entity('Player2'))
+        # evento que cria os inimigos de 5 em 5 segundos
+        pygame.time.set_timer(EVENT_ENEMY, SPAWN_TIME)
+
 
     def run(self):
         # funções que colocam a música no level. A primeira carrega a música e a segunda toca em loop
@@ -36,6 +46,10 @@ class Level:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                if event.type == EVENT_ENEMY:
+                    # cria uma aleatoriedade na crianção de inimigos Enemy1 e Enemy2
+                    choice = random.choice(('Enemy1', 'Enemy2'))
+                    self.entity_list.append(EntityFactory.get_entity('Enemy1'))
 
             # printed text
             # texto que mostra o tempo de duraação da fase

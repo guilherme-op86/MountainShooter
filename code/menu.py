@@ -56,6 +56,7 @@ class Menu:
                     quit()  # ecerra o jogo
                     # verifica se é um evento de tecla pressionada (prestar atenção na sintaxe KEYDOWN
                     # que é diferente de K_DOWN)
+                    # K_DOWN verifica se a tecla é pressionada apenas uma vez, assim como K_UP
                 if event.type == pygame.KEYDOWN:
                     # verifica se a tecla pressionada é para baixo (sintaxe diferente de KEYDOWN)
                     if event.key == pygame.K_DOWN:
