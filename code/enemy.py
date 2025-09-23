@@ -9,9 +9,5 @@ class Enemy(Entity):
         super().__init__(name, position)
 
     def move(self, ):
-        # vai aproveitar o movimento do background porque o inimigo se movimenta da direita para a esquerda
-        # cria o movimento parallax
-        # foi criada uma ENTITY_SPEED para o inimigo na const
+        # código que destrói a naa inimiga quando ela chega no final do lado esquerdo da tela
         self.rect.centerx -= ENTITY_SPEED[self.name]
-        if self.rect.right <= 0:
-            self.rect.left = WIN_WIDTH

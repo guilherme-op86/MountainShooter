@@ -7,9 +7,11 @@ import pygame
 from pygame import Surface, Rect
 from pygame.font import Font
 
+
 from code.const import COLOR_WHITE, WIN_HEIGHT, MENU_OPTION, EVENT_ENEMY, SPAWN_TIME
 from code.entity import Entity
 from code.entityFactory import EntityFactory
+from code.entityMediator import EntityMediator
 
 
 class Level:
@@ -28,6 +30,7 @@ class Level:
             self.entity_list.append(EntityFactory.get_entity('Player2'))
         # evento que cria os inimigos de 5 em 5 segundos
         pygame.time.set_timer(EVENT_ENEMY, SPAWN_TIME)
+        EntityMediator.verify_collision(entity_list=self.entity_list)
 
 
     def run(self):
@@ -49,7 +52,7 @@ class Level:
                 if event.type == EVENT_ENEMY:
                     # cria uma aleatoriedade na crianção de inimigos Enemy1 e Enemy2
                     choice = random.choice(('Enemy1', 'Enemy2'))
-                    self.entity_list.append(EntityFactory.get_entity('Enemy1'))
+                    self.entity_list.append(EntityFactory.get_entity(choice))
 
             # printed text
             # texto que mostra o tempo de duraação da fase
@@ -59,6 +62,10 @@ class Level:
             # mostra quantas entidades estão na tela
             self.level_text(14, f'entidades: {len(self.entity_list)}', COLOR_WHITE, (10, WIN_HEIGHT - 20))
             pygame.display.flip()
+            # verifica colisões e a vida
+            EntityMediator.verify_collision(entity_list=self.entity_list)
+            EntityMediator.verify_health(entity_list=self.entity_list)
+
 
     def level_text(self, text_size: int, text: str, text_color: tuple, text_pos: tuple):
         text_font: Font = pygame.font.SysFont(name="Lucida Sans Typewriter", size=text_size)
