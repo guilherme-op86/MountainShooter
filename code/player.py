@@ -3,14 +3,16 @@
 import pygame.key
 
 from code.const import ENTITY_SPEED, WIN_HEIGHT, WIN_WIDTH, PLAYER_KEY_UP, PLAYER_KEY_DOWN, PLAYER_KEY_LEFT, \
-    PLAYER_KEY_RIGHT
+    PLAYER_KEY_RIGHT, ENTITY_SHOT_DELAY
 from code.entity import Entity
+from code.const import PLAYER_KEY_SHOOT
+from code.player_shot import PlayerShot
 
 
-# herda os atributos da entidade
 class Player(Entity):
     def __init__(self, name: str, position: tuple):
         super().__init__(name, position)
+        self.shot_delay = ENTITY_SHOT_DELAY[self.name]
 
     def move(self, ):
         # o método get_pressed() verifica se a tecla é pressionada de maneira constante
@@ -33,3 +35,13 @@ class Player(Entity):
             # o incremento aqui é positivo porque aumenta no eixo x
         if pressed_key[PLAYER_KEY_RIGHT[self.name]] and self.rect.right < WIN_WIDTH:
             self.rect.centerx += ENTITY_SPEED[self.name]
+
+
+    def shoot(self):
+        # faz o controle da cadência de tiros dos player1 e player 2
+        self.shot_delay -= 1
+        if self.shot_delay == 0:
+            self.shot_delay = ENTITY_SHOT_DELAY[self.name]
+            pressed_key = pygame.key.get_pressed()
+            if pressed_key[PLAYER_KEY_SHOOT[self.name]]:
+                return PlayerShot(name=f'{self.name}Shot', position=(self.rect.centerx, self.rect.centery))
