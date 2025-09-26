@@ -4,7 +4,7 @@ import pygame.image
 from pygame import Surface, Rect
 from pygame.font import Font
 
-from code.const import WIN_WIDTH, COLOR_ORANGE, MENU_OPTION, COLOR_WHITE, COLOR_YELLOW
+from code.const import WIN_WIDTH, C_ORANGE, MENU_OPTION, C_WHITE, C_YELLOW
 
 
 class Menu:
@@ -28,20 +28,20 @@ class Menu:
             # a instrução a seguir escreve o texto por cima desta imagem
             self.window.blit(source=self.surf, dest=self.rect)
             # instrução que determina os argumentos para a criação do texto (escreve o texto por cima da imagem)
-            self.menu_text(50, 'Mountain', COLOR_ORANGE, ((WIN_WIDTH / 2), 70))
+            self.menu_text(50, 'Mountain', C_ORANGE, ((WIN_WIDTH / 2), 70))
             # a altura (eixo y) 120 deixa o texto mais baixo porque a posição inicial 00 começa no canto superior
             # direito
-            self.menu_text(50, 'Shooter', COLOR_ORANGE, ((WIN_WIDTH / 2), 120))
+            self.menu_text(50, 'Shooter', C_ORANGE, ((WIN_WIDTH / 2), 120))
 
             # laco do menu iterativo
             for i in range(len(MENU_OPTION)):
                 if i == menu_option:
-                    self.menu_text(20, MENU_OPTION[i], COLOR_YELLOW, ((WIN_WIDTH / 2), 200 + 25 * i))
+                    self.menu_text(20, MENU_OPTION[i], C_YELLOW, ((WIN_WIDTH / 2), 200 + 25 * i))
                 # impressão do texto do menu iterativo importando as constantes MENU_OPTION e COLOR_WHITE. A
                 # centralização na tela inicia com o primeiro texto em 200. Após cada iteração vai distanciando  + 30
                 # * i. Sem essa distanciação o texto fica sobreposto
                 else:
-                    self.menu_text(20, MENU_OPTION[i], COLOR_WHITE, ((WIN_WIDTH / 2), 200 + 25 * i))
+                    self.menu_text(20, MENU_OPTION[i], C_WHITE, ((WIN_WIDTH / 2), 200 + 25 * i))
 
             # faz com que tudo o que você desenhou no “fundo” da tela (usando blit(), draw.rect() , etc.) seja
             # finalmente exibido para o jogador.
