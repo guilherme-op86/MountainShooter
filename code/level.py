@@ -7,7 +7,8 @@ import pygame
 from pygame import Surface, Rect
 from pygame.font import Font
 
-from code.const import C_WHITE, WIN_HEIGHT, MENU_OPTION, EVENT_ENEMY, SPAWN_TIME, C_GREEN, C_CYAN
+from code.const import C_WHITE, WIN_HEIGHT, MENU_OPTION, EVENT_ENEMY, SPAWN_TIME, C_GREEN, C_CYAN, EVENT_TIMEOUT, \
+    TIME_OUT_STEP, TIMEOUT_LEVEL
 from code.entity import Entity
 from code.entityFactory import EntityFactory
 from code.entityMediator import EntityMediator
@@ -16,24 +17,31 @@ from code.enemy import Enemy
 
 
 class Level:
-    def __init__(self, window, name, game_mode):
+    def __init__(self, window: Surface, name: str, game_mode: str, player_score: list[int]):
+        self.timeout = TIMEOUT_LEVEL  # 20 segundos
         self.window = window
         self.name = name
         self.game_mode = game_mode
         self.entity_list: list[Entity] = []
-        self.entity_list.extend(EntityFactory.get_entity('Level1Bg'))
-        self.timeout = 2000  # 20 segundos
+        self.entity_list.extend(EntityFactory.get_entity(self.name + 'Bg'))
         # cria o player1 ao iniciar o level
         self.entity_list.append(EntityFactory.get_entity('Player1'))
+        player = EntityFactory.get_entity('Player1')
+        player.score = player_score[0]
+        self.entity_list.append(player)
         # condição para criar o player2 que só aparece nos modos cooperativos e competitivos (índices 1 e 2 da
         # constante MENU_OPTION)
         if game_mode in [MENU_OPTION[1], MENU_OPTION[2]]:
-            self.entity_list.append(EntityFactory.get_entity('Player2'))
+            player = EntityFactory.get_entity('Player2')
+            player.score = player_score[1]
+            self.entity_list.append(player)
         # evento que cria os inimigos de 5 em 5 segundos
         pygame.time.set_timer(EVENT_ENEMY, SPAWN_TIME)
+        # a cada 100 milisegungos a consição de vitória é checada
+        pygame.time.set_timer(EVENT_TIMEOUT, TIME_OUT_STEP)
         EntityMediator.verify_collision(entity_list=self.entity_list)
 
-    def run(self):
+    def run(self, player_score: list[int]):
         # funções que colocam a música no level. A primeira carrega a música e a segunda toca em loop
         pygame.mixer_music.load(f'./assets/{self.name}.mp3')
         pygame.mixer_music.play(-1)
@@ -62,6 +70,23 @@ class Level:
                     # cria uma aleatoriedade na crianção de inimigos Enemy1 e Enemy2
                     choice = random.choice(('Enemy1', 'Enemy2'))
                     self.entity_list.append(EntityFactory.get_entity(choice))
+                if event.type == EVENT_TIMEOUT:
+                    self.timeout -= TIME_OUT_STEP
+                    if self.timeout == 0:
+                        for ent in self.entity_list:
+                            if isinstance(ent, Player) and ent.name == 'Player1':
+                                player_score[0] = ent.score
+                            if isinstance(ent, Player) and ent.name == 'Player2':
+                                player_score[1] = ent.score
+                        return True
+
+                found_player = False
+                for ent in self.entity_list:
+                    if isinstance(ent, Player):
+                        found_player = True
+
+                if not found_player:
+                    return False
 
             # printed text
             # texto que mostra o tempo de duraação da fase

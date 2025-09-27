@@ -23,9 +23,15 @@ class Game:
 
             # itera pelo menu. Como a fase inicialmente é a mesma, vai iterar por todas a opções para iniciar a fase
             if menu_return in [MENU_OPTION[0], MENU_OPTION[1], MENU_OPTION[2]]:
-                level = Level(self.window, 'Level1', menu_return)
+                player_score = [0, 0]  # Player1, Player2
+                level = Level(self.window, 'Level1', menu_return, player_score)
                 # começa a execução da fase
-                level_return = level.run()
+                level_return = level.run(player_score)
+                if level_return:
+                    level = Level(self.window, 'Level2', menu_return, player_score)
+                    # começa a execução da fase
+                    level_return = level.run(player_score)
+
             elif menu_return == MENU_OPTION[4]:
                 pygame.quit()
                 quit()
