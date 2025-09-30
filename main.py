@@ -9,4 +9,3 @@ game.run()
 #   for j in range(i + 1, len(entity_list)):
 #      print(entity_list[i], entity_list[j])
 
-# tempo 20:21

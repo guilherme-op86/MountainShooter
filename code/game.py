@@ -3,6 +3,7 @@ import pygame
 from code.level import Level
 from code.menu import Menu
 from code.const import WIN_WIDTH, WIN_HEIGHT, MENU_OPTION
+from code.score import Score
 
 
 #!/usr/bin/python
@@ -16,6 +17,7 @@ class Game:
     def run(self, ):
         # laço que mantém a janela do jogo aberta
         while True:
+            score = Score(self.window)
             menu = Menu(self.window)
             # variável de retorno que captura o resultado da interação do jogador com o menu. Guarda qual o opção
             # o jogador escolheu ao pressionar a tecla enter
@@ -31,7 +33,11 @@ class Game:
                     level = Level(self.window, 'Level2', menu_return, player_score)
                     # começa a execução da fase
                     level_return = level.run(player_score)
-
+                    if level_return:
+                        score.save(menu_return, player_score)
+            # opção que mostra o score
+            elif menu_return == MENU_OPTION[3]:
+                score.show()
             elif menu_return == MENU_OPTION[4]:
                 pygame.quit()
                 quit()

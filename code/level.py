@@ -39,7 +39,6 @@ class Level:
         pygame.time.set_timer(EVENT_ENEMY, SPAWN_TIME)
         # a cada 100 milisegungos a consição de vitória é checada
         pygame.time.set_timer(EVENT_TIMEOUT, TIME_OUT_STEP)
-        EntityMediator.verify_collision(entity_list=self.entity_list)
 
     def run(self, player_score: list[int]):
         # funções que colocam a música no level. A primeira carrega a música e a segunda toca em loop
